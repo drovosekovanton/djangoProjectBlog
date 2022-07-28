@@ -30,7 +30,7 @@ class Comment(models.Model):
     date_published = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    comment_text = models.TextField()
+    comment_text = models.TextField(default='')
 
     def __str__(self):
         return f'{self.user.get_full_name()}: {self.comment_text[:50]}'
