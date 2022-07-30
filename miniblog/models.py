@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class BlogUser(models.Model):
@@ -19,11 +20,14 @@ class BlogUser(models.Model):
 
 class Post(models.Model):
     date_published = models.DateTimeField()
-    author = models.ForeignKey(BlogUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(BlogUser, on_delete=models.CASCADE)
     post_text = models.TextField()
 
     def __str__(self):
-        return f'{self.author.user.get_full_name()}: {self.post_text[:50]}'
+        return f'{self.user.user.get_full_name()}: {self.post_text[:50]}'
+
+    def get_absolute_url(self):
+        return reverse('blogs')  #, args=[self.id])
 
 
 class Comment(models.Model):

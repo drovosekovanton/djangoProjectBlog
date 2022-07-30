@@ -20,8 +20,6 @@ class UserAdmin(BaseUserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
-# admin.site.register(BlogUser)
-
 admin.site.register(Post)
 # TODO: tie comments with post somehow
 # admin.site.register(Comment)
