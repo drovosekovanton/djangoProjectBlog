@@ -27,12 +27,12 @@ class Post(models.Model):
         return f'{self.user.user.get_full_name()}: {self.post_text[:50]}'
 
     def get_absolute_url(self):
-        return reverse('blogs')  #, args=[self.id])
+        return reverse('posts')  #, args=[self.id])
 
 
 class Comment(models.Model):
     date_published = models.DateTimeField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(BlogUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment_text = models.TextField(default='')
 
