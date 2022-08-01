@@ -13,13 +13,8 @@ class UserAdmin(BaseUserAdmin):
     inlines = (BlogUserInline,)
 
 
-# class CommentsInline(admin.TabularInline):
-#     model = Comment
-#     verbose_name_plural = 'comments'
-
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 admin.site.register(Post)
-# TODO: tie comments with post somehow
-# admin.site.register(Comment)
+

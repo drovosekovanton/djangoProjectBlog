@@ -5,6 +5,7 @@
 {% block content %}
     <form method="post" action=".">
     {% csrf_token %}
+        <p><h3>Create post</h3></p>
         {{ form.as_p }}
         <input type="submit" value="Save">
     </form>

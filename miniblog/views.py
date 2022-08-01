@@ -14,6 +14,10 @@ class AllBloggersView(ListView):
     pass
 
 
+class BloggerView(DetailView):
+    pass
+
+
 class AllPostsView(ListView):
     model = Post
     template_name = 'miniblog/post_all.html'
@@ -21,12 +25,12 @@ class AllPostsView(ListView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['post_text']
+    fields = ['post_title', 'post_text']
     template_name_suffix = '_create_form'
     login_url = 'login'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user.bloguser
+        form.instance.user = self.request.user.blog_user
         form.instance.date_published = timezone.now()
         return super().form_valid(form)
 

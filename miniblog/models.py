@@ -10,31 +10,29 @@ class BlogUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_author = models.BooleanField()
     bio = models.TextField()
-    # usage shortcut
-    # u = User.objects.get(username='smith')
-    # bio = u.blogger.bio
 
     def __str__(self):
-        return self.user.get_full_name()
+        return self.user.username
 
 
 class Post(models.Model):
     date_published = models.DateTimeField()
-    user = models.ForeignKey(BlogUser, on_delete=models.CASCADE)
+    blog_user = models.ForeignKey(BlogUser, on_delete=models.CASCADE)
+    post_title = models.CharField(max_length=250)
     post_text = models.TextField()
 
     def __str__(self):
-        return f'{self.user.user.get_full_name()}: {self.post_text[:50]}'
+        return f'{self.blog_user.user.username}: {self.post_title[:50]}'
 
-    def get_absolute_url(self):
-        return reverse('posts')  #, args=[self.id])
+    # def get_absolute_url(self):
+    #     return reverse('posts')  #, args=[self.id])
 
 
 class Comment(models.Model):
     date_published = models.DateTimeField()
-    user = models.ForeignKey(BlogUser, on_delete=models.CASCADE)
+    blog_user = models.ForeignKey(BlogUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    comment_text = models.TextField(default='')
+    comment_text = models.TextField()
 
     def __str__(self):
-        return f'{self.user.get_full_name()}: {self.comment_text[:50]}'
+        return f'{self.blog_user.user.username}: {self.comment_text[:50]}'
