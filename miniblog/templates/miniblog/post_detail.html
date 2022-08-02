@@ -3,8 +3,9 @@
     Post: Miniblog
 {% endblock %}
 {% block content %}
-    <h1>Post by {{ object.user.user.username }}</h1>
+    <h2>Post by {{ object.blog_user.user.username }}</h2>
     <p></p>
+    <p><h2>{{ object.post_title }}</h2></p>
     <p>{{ object.post_text }}</p>
     {% if user.is_authenticated %}
         <input type="button" onclick="location.href='{% url 'create_comment' pk=object.pk %}'" value="Add comment"></input>

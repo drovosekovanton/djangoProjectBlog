@@ -3,7 +3,7 @@
     Create post: Miniblog
 {% endblock %}
 {% block content %}
-    <form method="post" action=".">
+    <form method="post" action="{% url 'create_post' %}">
     {% csrf_token %}
         <p><h3>Create post</h3></p>
         {{ form.as_p }}

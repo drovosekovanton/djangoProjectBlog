@@ -30,9 +30,12 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     login_url = 'login'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user.blog_user
+        form.instance.blog_user = self.request.user.bloguser
         form.instance.date_published = timezone.now()
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('post', kwargs={'pk': self.object.pk})
 
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
@@ -42,7 +45,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     login_url = 'login'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user.bloguser
+        form.instance.blog_user = self.request.user.bloguser
         form.instance.date_published = timezone.now()
         form.instance.post = Post.objects.get(self.kwargs['pk'])
         return super().form_valid(form)
