@@ -3,13 +3,13 @@
     Post: Miniblog
 {% endblock %}
 {% block content %}
-    <h2>Post by {{ object.blog_user.user.username }}</h2>
+    <h3>Post by {{ object.blog_user.user.username }}</h3>
     <p></p>
-    <p><h2>{{ object.post_title }}</h2></p>
+    <h3>{{ object.post_title }}</h3>
     <p>{{ object.post_text }}</p>
-    <p><h2>Comments:</h2></p>
+    <h6>Comments:</h6>
     <ul>
-        {% for comment in comments %}
+        {% for comment in object.comment_set.all %}
             <li>
                 <table>
                     <tr>

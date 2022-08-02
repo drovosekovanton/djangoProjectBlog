@@ -11,7 +11,9 @@ class IndexView(TemplateView):
 
 
 class AllBloggersView(ListView):
-    pass
+    model = BlogUser
+    paginate_by = 5
+    template_name = 'miniblog/bloggers_all.html'
 
 
 class BloggerView(DetailView):
@@ -21,6 +23,7 @@ class BloggerView(DetailView):
 class AllPostsView(ListView):
     model = Post
     template_name = 'miniblog/post_all.html'
+    paginate_by = 2
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -63,15 +66,7 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'miniblog/post_detail.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(PostDetailView, self).get_context_data(**kwargs)
-        context['comments'] = Comment.objects.filter(post_id=self.object.id)
-        return context
-
-    # override context data
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super(PostDetailView,
-    #                     self).get_context_data(*args, **kwargs)
-    #     # add extra field
-    #     context["category"] = "MISC"
+    # def get_context_data(self, **kwargs):
+    #     context = super(PostDetailView, self).get_context_data(**kwargs)
+    #     context['comments'] = Comment.objects.filter(post_id=self.object.id)
     #     return context

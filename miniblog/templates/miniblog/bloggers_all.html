@@ -1,15 +1,14 @@
 {% extends "miniblog/base.html" %}
 {% block title %}
-    All posts: Miniblog
+    All bloggers: Miniblog
 {% endblock %}
 {% block content %}
-    <h1>All posts</h1>
+    <h1>All bloggers</h1>
     <ul>
-        {% for post in page_obj %}
-            {# each post is a Post object #}
+        {% for bloguser in bloguser_list %}
+            {# each post is a BlogUser object #}
             <li>
-                {{ post.date_published|date:"H:i j/n/y" }}: {{ post.blog_user.user.username }}<br>
-                <a href="{% url 'post' post.pk %}">{{ post.post_title }}</a>
+                <a href="{% url 'blogger' bloguser.pk %}">{{ bloguser.user.username }}</a>
             </li>
         {% endfor %}
     </ul>
