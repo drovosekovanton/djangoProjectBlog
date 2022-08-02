@@ -44,10 +44,15 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     template_name_suffix = '_create_form'
     login_url = 'login'
 
+    def get_context_data(self, **kwargs):
+        context = super(CommentCreateView, self).get_context_data(**kwargs)
+        context['related_post'] = self.kwargs['pk']
+        return context
+
     def form_valid(self, form):
         form.instance.blog_user = self.request.user.bloguser
         form.instance.date_published = timezone.now()
-        form.instance.post = Post.objects.get(self.kwargs['pk'])
+        form.instance.post = Post.objects.get(pk=self.kwargs['pk'])
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -58,6 +63,11 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'miniblog/post_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(post_id=self.object.id)
+        return context
+
     # override context data
     # def get_context_data(self, *args, **kwargs):
     #     context = super(PostDetailView,
@@ -65,4 +75,3 @@ class PostDetailView(DetailView):
     #     # add extra field
     #     context["category"] = "MISC"
     #     return context
-

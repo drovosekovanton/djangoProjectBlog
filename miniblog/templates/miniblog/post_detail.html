@@ -7,7 +7,26 @@
     <p></p>
     <p><h2>{{ object.post_title }}</h2></p>
     <p>{{ object.post_text }}</p>
+    <p><h2>Comments:</h2></p>
+    <ul>
+        {% for comment in comments %}
+            <li>
+                <table>
+                    <tr>
+                        <td>{{ comment.blog_user.user.username }}</td>
+                        <td>{{ comment.date_published|date:"H:i j/n/y" }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ comment.comment_text }}</td>
+                    </tr>
+                </table>
+            </li>
+        {% endfor %}
+    </ul>
+
+
     {% if user.is_authenticated %}
-        <input type="button" onclick="location.href='{% url 'create_comment' pk=object.pk %}'" value="Add comment"></input>
+        <input type="button" onclick="location.href='{% url 'create_comment' pk=object.pk %}'"
+               value="Add comment"></input>
     {% endif %}
 {% endblock %}

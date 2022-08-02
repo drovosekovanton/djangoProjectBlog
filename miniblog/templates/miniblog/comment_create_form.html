@@ -5,7 +5,7 @@
 {% block content %}
     <form method="post">
     {% csrf_token %}
-        <p><h3>Adding comment to the <a href="{% url 'post' pk=object.post.pk %}">post</a></h3></p>
+        <p><h3>Adding comment to the <a href="{% url 'post' related_post %}">post</a></h3></p>
         {{ form.as_p }}
         <input type="submit" value="Save">
     </form>
