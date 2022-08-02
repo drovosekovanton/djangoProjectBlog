@@ -3,7 +3,7 @@
     Post: Miniblog
 {% endblock %}
 {% block content %}
-    <h3>Post by {{ object.blog_user.user.username }}</h3>
+    <h3>Post by {{ object.user.username }}</h3>
     <p></p>
     <h3>{{ object.post_title }}</h3>
     <p>{{ object.post_text }}</p>

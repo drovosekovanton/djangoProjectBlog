@@ -14,16 +14,19 @@ class AllBloggersView(ListView):
     model = BlogUser
     paginate_by = 5
     template_name = 'miniblog/bloggers_all.html'
+    ordering = ['user']
 
 
 class BloggerView(DetailView):
-    pass
+    model = BlogUser
+    template_name = 'miniblog/blogger_detail.html'
 
 
 class AllPostsView(ListView):
     model = Post
     template_name = 'miniblog/post_all.html'
     paginate_by = 2
+    ordering = ['-date_published']
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -33,7 +36,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     login_url = 'login'
 
     def form_valid(self, form):
-        form.instance.blog_user = self.request.user.bloguser
+        form.instance.user = self.request.user.bloguser
         form.instance.date_published = timezone.now()
         return super().form_valid(form)
 
@@ -53,7 +56,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        form.instance.blog_user = self.request.user.bloguser
+        form.instance.user = self.request.user.bloguser
         form.instance.date_published = timezone.now()
         form.instance.post = Post.objects.get(pk=self.kwargs['pk'])
         return super().form_valid(form)
