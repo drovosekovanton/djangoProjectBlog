@@ -3,7 +3,7 @@
     Post: Miniblog
 {% endblock %}
 {% block content %}
-    <h3>Post by {{ object.user.username }}</h3>
+    <h3>Post by {{ object.user.username }} at {{ post.date_published|date:"H:i j/n/y" }}</h3>
     <p></p>
     <h3>{{ object.post_title }}</h3>
     <p>{{ object.post_text }}</p>
@@ -11,19 +11,12 @@
     <ul>
         {% for comment in object.comment_set.all %}
             <li>
-                <table>
-                    <tr>
-                        <td>{{ comment.user.username }}</td>
-                        <td>{{ comment.date_published|date:"H:i j/n/y" }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ comment.comment_text }}</td>
-                    </tr>
-                </table>
+                <a href="{% url 'blogger' comment.user.pk %}">{{ comment.user.username }}</a> at
+                {{ comment.date_published|date:"H:i j/n/y" }}<br>
+                <span class="comment">{{ comment.comment_text }}</span>
             </li>
         {% endfor %}
     </ul>
-
 
     {% if user.is_authenticated %}
         <input type="button" onclick="location.href='{% url 'create_comment' pk=object.pk %}'"

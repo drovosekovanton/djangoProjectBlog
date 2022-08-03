@@ -19,7 +19,7 @@
             {% block sidebar %}
                 <ul class="sidebar-nav">
                     {% if user.is_authenticated %}
-                        <li>Welcome, {{ user.get_username }}</li>
+                        <li>Welcome, {{ user.username }}</li>
                         {% if user.bloguser.is_author %}
                             <li><a href="{% url 'create_post' %}">Create post</a></li>
                             <li></li>
@@ -39,7 +39,7 @@
         <div class="col-sm-10">
             <div class="content">
                 {% block content %}{% endblock %}
-                {# pagination block #}
+                {# pagination block // copied from django documentation #}
                 {% if page_obj %}
                     <div class="pagination">
                         <span class="step-links">

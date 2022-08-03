@@ -25,6 +25,7 @@ class BloggerView(ListView):
     model = Post
     template_name = 'miniblog/blogger_detail.html'
     paginate_by = 2
+
     # or should we use SingleObjectMixin, like in documentation?
     # https://docs.djangoproject.com/en/4.0/topics/class-based-views/mixins/#using-singleobjectmixin-with-listview
 
@@ -41,7 +42,7 @@ class BloggerView(ListView):
         :return: modified context
         """
         context = super(BloggerView, self).get_context_data(**kwargs)
-        context['blogger'] = User(pk=self.kwargs['pk'])
+        context['blogger'] = User.objects.get(pk=self.kwargs['pk'])
         return context
 
 
@@ -59,7 +60,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     login_url = 'login'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user.bloguser
+        form.instance.user = self.request.user
         form.instance.date_published = timezone.now()
         return super().form_valid(form)
 
