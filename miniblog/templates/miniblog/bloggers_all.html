@@ -5,10 +5,10 @@
 {% block content %}
     <h1>All bloggers</h1>
     <ul>
-        {% for bloguser in page_obj %}
-            {# each post is a BlogUser object #}
+        {% for blogger in page_obj %}
+            {# each blogger is a User object #}
             <li>
-                <a href="{% url 'blogger' bloguser.pk %}">{{ bloguser.user.username }}</a>
+                <a href="{% url 'blogger' blogger.pk %}">{{ blogger.username }}</a>
             </li>
         {% endfor %}
     </ul>

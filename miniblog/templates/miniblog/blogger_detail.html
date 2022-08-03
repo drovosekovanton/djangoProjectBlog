@@ -3,5 +3,15 @@
     Blog user: Miniblog
 {% endblock %}
 {% block content %}
-
+    <h5>Blogger {{ blogger.username }}</h5>
+    <h3>Bio:</h3>
+    <h6>{{ blogger.bloguser.bio }}</h6>
+    <ul>
+        {% for post in post_list %}
+            <li>
+                {{ post.date_published|date:"H:i j/n/y" }}:
+                <a href="{% url 'post' post.pk %}">{{ post.post_title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

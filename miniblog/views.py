@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.views.generic import TemplateView, CreateView, ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post, BlogUser, Comment
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 
@@ -11,15 +12,37 @@ class IndexView(TemplateView):
 
 
 class AllBloggersView(ListView):
-    model = BlogUser
+    model = User
     paginate_by = 5
     template_name = 'miniblog/bloggers_all.html'
-    ordering = ['user']
+    ordering = ['username']
 
 
-class BloggerView(DetailView):
-    model = BlogUser
+class BloggerView(ListView):
+    """
+        display single blogger detail with paginated list of his post
+    """
+    model = Post
     template_name = 'miniblog/blogger_detail.html'
+    paginate_by = 2
+    # or should we use SingleObjectMixin, like in documentation?
+    # https://docs.djangoproject.com/en/4.0/topics/class-based-views/mixins/#using-singleobjectmixin-with-listview
+
+    def get_queryset(self):
+        """
+        Returns queryset of one's blogger posts
+        :return: QuerySet of Post
+        """
+        return Post.objects.filter(user=User(pk=self.kwargs['pk']))
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """
+        Add to context blogger object (User)
+        :return: modified context
+        """
+        context = super(BloggerView, self).get_context_data(**kwargs)
+        context['blogger'] = User(pk=self.kwargs['pk'])
+        return context
 
 
 class AllPostsView(ListView):
@@ -56,7 +79,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        form.instance.user = self.request.user.bloguser
+        form.instance.user = self.request.user
         form.instance.date_published = timezone.now()
         form.instance.post = Post.objects.get(pk=self.kwargs['pk'])
         return super().form_valid(form)
