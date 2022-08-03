@@ -4,20 +4,23 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from miniblog.models import BlogUser, Post, Comment
 
 
-class BlogUserInline(admin.StackedInline):
+class BlogUserInline(admin.TabularInline):
     model = BlogUser
     can_delete = False
     extra = 0
 
 
-class CommentInline(admin.StackedInline):
+class CommentInline(admin.TabularInline):
     model = Comment
     can_delete = True
     extra = 0
+    fieldsets = [
+        (None, {'fields': ['user', 'date_published', 'comment_text']}),
+    ]
 
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (BlogUserInline,)
+    inlines = [BlogUserInline]
 
 
 class PostAdmin(admin.ModelAdmin):

@@ -4,12 +4,14 @@
 {% endblock %}
 {% block content %}
     <h1>All posts</h1>
+    <p/>
     <ul>
         {% for post in page_obj %}
             {# each post is a Post object #}
             <li>
-                {{ post.user.username }}: {{ post.date_published|date:"H:i j/n/y" }}<br>
                 <a href="{% url 'post' post.pk %}">{{ post.post_title }}</a>
+                ({{ post.date_published|date:"j M Y" }}) —
+                <a href="{% url 'blogger' post.user.pk %}">{{ post.user.username }}</a>
             </li>
         {% endfor %}
     </ul>

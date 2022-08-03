@@ -24,7 +24,7 @@ class BloggerView(ListView):
     """
     model = Post
     template_name = 'miniblog/blogger_detail.html'
-    paginate_by = 2
+    paginate_by = 5
 
     # or should we use SingleObjectMixin, like in documentation?
     # https://docs.djangoproject.com/en/4.0/topics/class-based-views/mixins/#using-singleobjectmixin-with-listview
@@ -49,7 +49,7 @@ class BloggerView(ListView):
 class AllPostsView(ListView):
     model = Post
     template_name = 'miniblog/post_all.html'
-    paginate_by = 2
+    paginate_by = 5
     ordering = ['-date_published']
 
 

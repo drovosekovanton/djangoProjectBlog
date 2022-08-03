@@ -1,15 +1,16 @@
 {% extends "miniblog/base.html" %}
 {% block title %}
-    Blog user: Miniblog
+    Blogger: Miniblog
 {% endblock %}
 {% block content %}
-    <h5>Blogger {{ blogger.username }}</h5>
-    <h3>Bio:</h3>
-    <h6>{{ blogger.bloguser.bio }}</h6>
+    <h3>Blogger: {{ blogger.username }}</h3>
+    <h5>Bio:</h5>
+    <p>{{ blogger.bloguser.bio }}</p>
+    <h5>Recent posts:</h5>
     <ul>
-        {% for post in post_list %}
+        {% for post in page_obj %}
             <li>
-                {{ post.date_published|date:"H:i j/n/y" }}:
+                {{ post.date_published|date:"H:i j M Y" }}:
                 <a href="{% url 'post' post.pk %}">{{ post.post_title }}</a>
             </li>
         {% endfor %}
