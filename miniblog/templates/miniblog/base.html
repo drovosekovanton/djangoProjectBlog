@@ -20,7 +20,9 @@
                 <ul class="sidebar-nav">
                     {% if user.is_authenticated %}
                         <li>Welcome, {{ user.username }}</li><br>
-                        <li><a href="{% url 'create_post' %}">Create post</a></li>
+                        {% if perms.miniblog.add_post %}
+                            <li><a href="{% url 'create_post' %}">Create post</a></li>
+                        {% endif %}
                         <li></li>
                     {% endif %}
                     <li><a href="{% url 'home' %}">Home</a></li>

@@ -12,7 +12,7 @@
     <p></p>
     <span class="comment"><p><strong>Comments:</strong></p>
     <ul>
-        {% for comment in object.comment_set.all %}
+        {% for comment in comments %}
             <li>
                 <a href="{% url 'blogger' comment.user.pk %}">{{ comment.user.username }}</a>
                  ({{ comment.date_published|date:"H:i j M Y" }}) —

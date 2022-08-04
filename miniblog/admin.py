@@ -7,7 +7,7 @@ from miniblog.models import BlogUser, Post, Comment
 class BlogUserInline(admin.TabularInline):
     model = BlogUser
     can_delete = False
-    extra = 0
+    extra = 1
 
 
 class CommentInline(admin.TabularInline):
