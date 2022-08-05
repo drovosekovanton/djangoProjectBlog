@@ -27,6 +27,7 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.user.username}: {self.post_title[:50]}'
 
+    # allows to jump to the specific post from admin panel
     def get_absolute_url(self):
         return reverse('post', kwargs={'pk': self.pk})
 
