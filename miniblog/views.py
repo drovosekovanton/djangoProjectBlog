@@ -8,6 +8,9 @@ from django.utils import timezone
 
 
 class IndexView(TemplateView):
+    """
+    Display page with project description
+    """
     template_name = 'miniblog/index.html'
 
 
@@ -20,7 +23,7 @@ class AllBloggersView(ListView):
 
 class BloggerView(ListView):
     """
-        display single blogger detail with paginated list of his post
+    Display single blogger detail with paginated list of his post
     """
     model = Post
     template_name = 'miniblog/blogger_detail.html'
@@ -42,6 +45,9 @@ class BloggerView(ListView):
 
 
 class AllPostsView(ListView):
+    """
+    Paginated display of all post ranged by date
+    """
     model = Post
     template_name = 'miniblog/post_all.html'
     paginate_by = 5
@@ -49,6 +55,9 @@ class AllPostsView(ListView):
 
 
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    """
+    Display form to add new post record
+    """
     model = Post
     fields = ['post_title', 'post_text']
     template_name_suffix = '_create_form'
@@ -57,15 +66,24 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_denied_message = 'You have to be in bloggers group to create posts!'
 
     def form_valid(self, form):
+        """
+        Inserting non-editable fields like user and date
+        """
         form.instance.user = self.request.user
         form.instance.date_published = timezone.now()
         return super().form_valid(form)
 
     def get_success_url(self):
+        """
+        Redirects to newly created post detail page
+        """
         return reverse('post', kwargs={'pk': self.object.pk})
 
 
 class CommentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    """
+    Display a form to add a comment to the specific post
+    """
     model = Comment
     fields = ['comment_text']
     template_name_suffix = '_create_form'
@@ -73,25 +91,40 @@ class CommentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
     permission_required = 'miniblog.add_comment'
 
     def get_context_data(self, **kwargs):
+        """
+        Adding related post to context
+        """
         context = super(CommentCreateView, self).get_context_data(**kwargs)
         context['related_post'] = self.kwargs['pk']
         return context
 
     def form_valid(self, form):
+        """
+        Inserting non-editable fields like user and date
+        """
         form.instance.user = self.request.user
         form.instance.date_published = timezone.now()
         form.instance.post = Post.objects.get(pk=self.kwargs['pk'])
         return super().form_valid(form)
 
     def get_success_url(self):
+        """
+        Redirects to specific post with newly added comment
+        """
         return reverse('post', kwargs={'pk': self.object.post.pk})
 
 
 class PostDetailView(DetailView):
+    """
+    Displays detailed post info with its comments
+    """
     model = Post
     template_name = 'miniblog/post_detail.html'
 
     def get_context_data(self, **kwargs):
+        """
+        Adding to context related comments sorted by their date in reverse order
+        """
         context = super(PostDetailView, self).get_context_data(**kwargs)
         context['comments'] = Comment.objects.filter(post_id=self.object.id).order_by('date_published')
         return context

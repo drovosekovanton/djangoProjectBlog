@@ -24,3 +24,4 @@ urlpatterns = [
     # path('miniblog/', include('django.contrib.auth.urls')),
     path('miniblog/', include('miniblog.urls'), name='miniblog'),
 ]
+pass
