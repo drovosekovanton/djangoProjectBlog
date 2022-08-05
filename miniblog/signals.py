@@ -1,7 +1,7 @@
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-from django.contrib.auth.models import User
-from .models import BlogUser
+# from django.dispatch import receiver
+# from django.db.models.signals import post_save
+# from django.contrib.auth.models import User
+# from .models import BlogUser
 
 
 # In this project, 'Bio' field of user will be populated through admin interface only

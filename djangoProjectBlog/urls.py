@@ -1,3 +1,4 @@
+# noinspection GrazieInspection
 """djangoProjectBlog URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -24,4 +25,3 @@ urlpatterns = [
     # path('miniblog/', include('django.contrib.auth.urls')),
     path('miniblog/', include('miniblog.urls'), name='miniblog'),
 ]
-pass

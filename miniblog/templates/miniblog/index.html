@@ -6,14 +6,14 @@
     <p>This project (aka Miniblog) written on Django
         and demonstrating basic principles in working with Django's Classes, Views and Templates.</p>
     <p>This project was written as the final exam work after my employer's internal Django education.</p>
-    <p>Project utilizes Django's internal users' administration, and allows to write simple post entries,
+    <p>Project utilizes Django's internal users' administration, and allows to write simple posts,
     optionally commented by other users.</p>
     <p>There is no complicated things like JS scripts, this project in most of its parts focused on backend.</p>
     <p></p>
     <p>You are free to go starting with user creation in <a href="{% url 'admin:index' %}auth/user/add">admin panel</a>.
         Then you can start posting some posts and commenting them under different users.</p>
     <p>Users can be divided into groups by their ability to create posts.
-        This will depends on internal Django's permission system:
+        This relies on internal Django's permission system:
         the easiest way is to create user groups in admin panel with or
         without <i>miniblog.add_post</i> permission to allow specific user to comment only.</p>
 

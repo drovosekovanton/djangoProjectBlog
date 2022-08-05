@@ -1,29 +1,35 @@
-from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import TemplateView, CreateView, ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from .models import Post, BlogUser, Comment
+from .models import Post, Comment
 from django.contrib.auth.models import User
 from django.utils import timezone
 
 
 class IndexView(TemplateView):
     """
-    Display page with project description
+    Displays page with project description
     """
     template_name = 'miniblog/index.html'
 
 
 class AllBloggersView(ListView):
+    """
+    Displays all users ever posted
+    """
     model = User
     paginate_by = 5
     template_name = 'miniblog/bloggers_all.html'
     ordering = ['username']
 
+    def get_queryset(self):
+        # bad query, need to rewrite
+        return User.objects.filter(post__isnull=False).distinct()
+
 
 class BloggerView(ListView):
     """
-    Display single blogger detail with paginated list of his post
+    Displays single blogger detail with paginated list of his post
     """
     model = Post
     template_name = 'miniblog/blogger_detail.html'
@@ -37,7 +43,7 @@ class BloggerView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """
-        Add to context blogger object (User)
+        Adds to context blogger object (User)
         """
         context = super(BloggerView, self).get_context_data(**kwargs)
         context['blogger'] = User.objects.get(pk=self.kwargs['pk'])
@@ -56,7 +62,7 @@ class AllPostsView(ListView):
 
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """
-    Display form to add new post record
+    Displays form to add new post record
     """
     model = Post
     fields = ['post_title', 'post_text']
@@ -67,7 +73,7 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
     def form_valid(self, form):
         """
-        Inserting non-editable fields like user and date
+        Inserts non-editable fields like user and date
         """
         form.instance.user = self.request.user
         form.instance.date_published = timezone.now()
@@ -82,7 +88,7 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
 class CommentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """
-    Display a form to add a comment to the specific post
+    Displays a form to add a comment to the specific post
     """
     model = Comment
     fields = ['comment_text']
@@ -92,7 +98,7 @@ class CommentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
     def get_context_data(self, **kwargs):
         """
-        Adding related post to context
+        Adds related post to context
         """
         context = super(CommentCreateView, self).get_context_data(**kwargs)
         context['related_post'] = self.kwargs['pk']
@@ -100,7 +106,7 @@ class CommentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
     def form_valid(self, form):
         """
-        Inserting non-editable fields like user and date
+        Inserts non-editable fields like user and date
         """
         form.instance.user = self.request.user
         form.instance.date_published = timezone.now()
@@ -123,7 +129,7 @@ class PostDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         """
-        Adding to context related comments sorted by their date in reverse order
+        Adds to context related comments sorted by their date in reverse order
         """
         context = super(PostDetailView, self).get_context_data(**kwargs)
         context['comments'] = Comment.objects.filter(post_id=self.object.id).order_by('date_published')
