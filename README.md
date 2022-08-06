@@ -14,4 +14,8 @@ All users created in admin panel with superuser. Permission system relies on two
 
 Names of groups can be different, just make sure that one group can add comment only, and the other can also add post, that's all.
 
+
 Most of the things can be done from admin panel, including post and comments editing, but this is restricted to admin panels only, regular users can not edit or delete their posts or comments.
+
+
+As a quick start, in django shell you can import and run create_test_data function from miniblog\tests.py. It will pre-populate database with bloggers, regular users, their permissions, posts, and comments (users' passwords will be the same as usernames).
