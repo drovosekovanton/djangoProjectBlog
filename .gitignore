@@ -1,2 +1,3 @@
 /venv/
 /djangoProjectBlog/settings_local.py
+/miniblog/migrations/

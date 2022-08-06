@@ -13,7 +13,7 @@ from datetime import timedelta
 
 def create_test_data():
     number_of_posts = 20
-    number_of_bloggers = 5
+    number_of_bloggers = 7
     number_of_commentators = 10
     max_number_of_comments = 20
     fake_factory = Faker()
@@ -41,11 +41,10 @@ def create_test_data():
     # create test users: bloggers and commentators
     group = Group.objects.get(name='Bloggers')
     for index in range(number_of_bloggers):
-        u = User(
+        u = User.objects.create_user(
             username=f'blogger_{index}',
             password=f'blogger_{index}',
         )
-        u.save()
         if random() > 0.5:
             BlogUser.objects.create(
                 user=u,
@@ -55,11 +54,10 @@ def create_test_data():
 
     group = Group.objects.get(name='Commentators')
     for index in range(number_of_commentators):
-        u = User(
+        u = User.objects.create_user(
             username=f'commentator_{index}',
             password=f'commentator_{index}',
         )
-        u.save()
         u.groups.add(group)
 
     # create test posts with optional comments

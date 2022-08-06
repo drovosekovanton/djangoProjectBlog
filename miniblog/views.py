@@ -20,11 +20,11 @@ class AllBloggersView(ListView):
     model = User
     paginate_by = 5
     template_name = 'miniblog/bloggers_all.html'
-    ordering = ['username']
+    # ordering = ['username']
 
     def get_queryset(self):
         # bad query, need to rewrite
-        return User.objects.filter(post__isnull=False).distinct()
+        return User.objects.filter(post__isnull=False).distinct().order_by('username')
 
 
 class BloggerView(ListView):
