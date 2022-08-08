@@ -6,6 +6,7 @@ from django.urls import reverse
 
 from .models import Post, Comment, BlogUser
 
+
 from random import randint, random, choice
 from faker import Faker
 from datetime import timedelta
@@ -87,7 +88,7 @@ def create_test_data():
             )
 
 
-class BlogListView(TestCase):
+class TestMix(TestCase):
 
     @classmethod
     def setUpTestData(cls):
@@ -113,3 +114,29 @@ class BlogListView(TestCase):
         self.assertTrue(resp.context['is_paginated'] is True)
         self.assertEqual(len(resp.context['page_obj']), 5)
         self.assertEqual(len(resp.context['post_list']), 5)
+
+    def test_wrong_post_index(self):
+        # post index farther than max test posts count
+        resp = self.client.get(reverse('post', kwargs={'pk': 100}))
+        self.assertEqual(resp.status_code, 404)
+
+    def test_commentator_can_not_post(self):
+        c = self.client
+        resp = c.post(
+            reverse('login'),
+            {'username': 'commentator_0', 'password': 'commentator_0'},
+            follow=True,
+        )
+        self.assertEqual(resp.status_code, 200)
+        resp = c.get(reverse('create_post'), follow=True)
+        self.assertEqual(resp.status_code, 403)
+
+    def test_anonymous_redirects_to_login_in_comments(self):
+        from django.contrib.auth.views import LoginView
+        resp = self.client.get(reverse('create_comment', kwargs={'pk': Post.objects.first().pk}), follow=True)
+        self.assertIsInstance(resp.context_data['view'], LoginView)
+
+    def test_anonymous_redirects_to_login_in_create_post(self):
+        from django.contrib.auth.views import LoginView
+        resp = self.client.get(reverse('create_post'), follow=True)
+        self.assertIsInstance(resp.context_data['view'], LoginView)
