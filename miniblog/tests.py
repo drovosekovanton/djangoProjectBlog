@@ -6,7 +6,6 @@ from django.urls import reverse
 
 from .models import Post, Comment, BlogUser
 
-
 from random import randint, random, choice
 from faker import Faker
 from datetime import timedelta
@@ -140,3 +139,38 @@ class TestMix(TestCase):
         from django.contrib.auth.views import LoginView
         resp = self.client.get(reverse('create_post'), follow=True)
         self.assertIsInstance(resp.context_data['view'], LoginView)
+
+    def test_no_empty_post(self):
+        c = self.client
+        resp = c.post(
+            reverse('login'),
+            {'username': 'blogger_0', 'password': 'blogger_0'},
+            follow=True,
+        )
+        self.assertEqual(resp.status_code, 200)
+        resp = c.post(
+            reverse('create_post'),
+            {'post_title': '',
+             'post_text': ''},
+            follow=True,
+        )
+        # we stays on the same page
+        self.assertEqual(resp.request['PATH_INFO'], reverse('create_post'))
+
+    def test_no_empty_comments(self):
+        c = self.client
+        resp = c.post(
+            reverse('login'),
+            {'username': 'commentator_0', 'password': 'commentator_0'},
+            follow=True,
+        )
+        self.assertEqual(resp.status_code, 200)
+        resp = c.post(
+            reverse('create_comment', kwargs={'pk': Post.objects.first().pk}),
+            {'comment_text': ''},
+        )
+        # we stays on the same page
+        self.assertEqual(
+            resp.request['PATH_INFO'],
+            reverse('create_comment', kwargs={'pk': Post.objects.first().pk})
+        )
