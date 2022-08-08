@@ -169,8 +169,25 @@ class TestMix(TestCase):
             reverse('create_comment', kwargs={'pk': Post.objects.first().pk}),
             {'comment_text': ''},
         )
-        # we stays on the same page
+        # we stay on the same page
         self.assertEqual(
             resp.request['PATH_INFO'],
             reverse('create_comment', kwargs={'pk': Post.objects.first().pk})
         )
+
+    def test_max_length_of_text_fields(self):
+        c = self.client
+        resp = c.post(
+            reverse('login'),
+            {'username': 'blogger_0', 'password': 'blogger_0'},
+            follow=True,
+        )
+        self.assertEqual(resp.status_code, 200)
+        resp = c.post(
+            reverse('create_post'),
+            {'post_title': ''.join([str(i) for i in range(150)]),
+             'post_text': ''.join([str(i) for i in range(450)])},
+            follow=True,
+        )
+        # we stay on the same page
+        self.assertEqual(resp.request['PATH_INFO'], reverse('create_post'))
