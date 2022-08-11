@@ -28,7 +28,8 @@ class AllBloggersView(ListView):
 
     def get_queryset(self):
         # bad query, need to rewrite
-        return User.objects.filter(post__isnull=False).distinct().order_by('username')
+        users_ever_posted = Post.objects.values_list('user').distinct()
+        return User.objects.filter(id__in=users_ever_posted).order_by('username')
 
 
 class BloggerView(ListView):
