@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from django.contrib.auth.views import LoginView, LogoutView
 from .views import \
     IndexView,\
@@ -7,7 +8,15 @@ from .views import \
     PostCreateView, \
     PostDetailView, \
     CommentCreateView, \
-    BloggerView
+    BloggerView, \
+    UserViewSet, \
+    PostViewSet, \
+    CommentViewSet
+
+router = DefaultRouter()
+router.register('users', UserViewSet)
+router.register('posts', PostViewSet)
+router.register('comments', CommentViewSet)
 
 urlpatterns = [
     path('', IndexView.as_view(), name='home'),  # about this mini blogs
@@ -19,4 +28,5 @@ urlpatterns = [
     path('<int:pk>/create/', CommentCreateView.as_view(), name='create_comment'),  # create comment
     path('login/', LoginView.as_view(), name='login'),  # default login view
     path('logout/', LogoutView.as_view(), name='logout'),  # default logout view
+    path('api/', include(router.urls)),
 ]

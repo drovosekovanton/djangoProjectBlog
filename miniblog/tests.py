@@ -154,7 +154,7 @@ class TestMix(TestCase):
              'post_text': ''},
             follow=True,
         )
-        # we stays on the same page
+        # we stay on the same page
         self.assertEqual(resp.request['PATH_INFO'], reverse('create_post'))
 
     def test_no_empty_comments(self):

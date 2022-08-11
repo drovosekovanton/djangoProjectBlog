@@ -1,9 +1,12 @@
-from django.urls import reverse
-from django.views.generic import TemplateView, CreateView, ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from .models import Post, Comment
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.utils import timezone
+from django.views.generic import TemplateView, CreateView, ListView, DetailView
+from rest_framework import viewsets, mixins
+
+from .serializers import UserSerializer, PostSerializer, CommentSerializer
+from .models import Post, Comment
 
 
 class IndexView(TemplateView):
@@ -20,6 +23,7 @@ class AllBloggersView(ListView):
     model = User
     paginate_by = 5
     template_name = 'miniblog/bloggers_all.html'
+
     # ordering = ['username']
 
     def get_queryset(self):
@@ -134,3 +138,18 @@ class PostDetailView(DetailView):
         context = super(PostDetailView, self).get_context_data(**kwargs)
         context['comments'] = Comment.objects.filter(post_id=self.object.id).order_by('date_published')
         return context
+
+
+class UserViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class PostViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class CommentViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
