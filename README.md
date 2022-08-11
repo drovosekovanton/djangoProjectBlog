@@ -19,3 +19,6 @@ Most of the things can be done from the admin panel, including post and comments
 
 
 As a quick start, in the Django shell you can import and run the _create_test_data_ function from miniblog\tests.py. It will pre-populate the database with bloggers, regular users, their permissions, posts, and comments (users' passwords will be the same as usernames).
+
+
+Project also has basic API implementation. For now it is restricted with viewing of authors, posts and comments. Neither creating objects, nor updating nor deleting is not supported. API endpoint is available through /miniblog/api url.

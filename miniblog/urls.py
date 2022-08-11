@@ -28,5 +28,5 @@ urlpatterns = [
     path('<int:pk>/create/', CommentCreateView.as_view(), name='create_comment'),  # create comment
     path('login/', LoginView.as_view(), name='login'),  # default login view
     path('logout/', LogoutView.as_view(), name='logout'),  # default logout view
-    path('api/', include(router.urls)),
+    path('api/', include((router.urls, 'miniblog'))),  # API interface
 ]
